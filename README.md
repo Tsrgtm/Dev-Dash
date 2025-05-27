@@ -92,7 +92,6 @@ These instructions will get you a copy of the project up and running on your loc
 -   [Tailwind CSS v4.1](https://tailwindcss.com/)
 -   [Blade UI Kit Heroicons ^2.6](https://blade-ui-kit.com/)
 -   [Alpine.js](https://alpinejs.dev/) (Commonly used with Livewire/Tailwind)
--   **(List any other key libraries or frameworks)**
 
 ## 🎨 Styling & Theming
 
