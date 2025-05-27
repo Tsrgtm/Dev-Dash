@@ -21,6 +21,11 @@ class GlobalSearch extends Component
         $this->results = $this->getResultsProperty();
     }
 
+    public function updatedFilter()
+    {
+        $this->results = $this->getResultsProperty();
+    }
+
     public function mount()
     {
         $this->results = $this->getResultsProperty();
@@ -35,9 +40,13 @@ class GlobalSearch extends Component
 
         $results = collect();
 
+        $postLimit = $this->filter === 'all' ? 5 : 10;
+        $userLimit = $this->filter === 'all' ? 5 : 10;
+        $tagLimit = $this->filter === 'all' ? 5 : 10;
+
         if ($this->filter === 'all' || $this->filter === 'posts') {
             $posts = Post::where('title', 'like', '%' . $this->query . '%')
-                ->limit(5)
+                ->limit($postLimit)
                 ->get()
                 ->map(function ($post) {
                     return [
@@ -55,7 +64,6 @@ class GlobalSearch extends Component
         if ($this->filter === 'all' || $this->filter === 'users') {
             $usersQuery = User::query();
 
-            // Exclude current user if logged in
             if (auth()->check()) {
                 $usersQuery->where('id', '!=', auth()->id());
             }
@@ -64,7 +72,7 @@ class GlobalSearch extends Component
                 $query->where('name', 'like', '%' . $this->query . '%')
                     ->orWhere('username', 'like', '%' . $this->query . '%');
             })
-                ->limit(5)
+                ->limit($userLimit)
                 ->get()
                 ->map(function ($user) {
                     return [
@@ -79,10 +87,9 @@ class GlobalSearch extends Component
             $results = $results->concat($users);
         }
 
-
         if ($this->filter === 'all' || $this->filter === 'tags') {
             $tags = Tag::where('name', 'like', '%' . $this->query . '%')
-                ->limit(5)
+                ->limit($tagLimit)
                 ->get()
                 ->map(function ($tag) {
                     return [

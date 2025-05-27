@@ -35,6 +35,27 @@
                     <hr class="border-gray-200 dark:border-gray-700">
                 </div>
 
+                @if ($query)
+                    <div class="flex items-center px-6 py-2">
+                        <button @click="$wire.set('filter', 'all')"
+                            class="px-4 py-1.5 font-medium text-sm leading-none cursor-pointer {{ $filter === 'all' ? 'bg-primary-light dark:bg-primary-dark text-white rounded-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200' }}">
+                            All
+                        </button>
+                        <button @click="$wire.set('filter', 'posts')"
+                            class="px-4 py-1.5 font-medium text-sm leading-none cursor-pointer {{ $filter === 'posts' ? 'bg-primary-light dark:bg-primary-dark text-white rounded-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200' }}">
+                            Posts
+                        </button>
+                        <button @click="$wire.set('filter', 'tags')"
+                            class="px-4 py-1.5 font-medium text-sm leading-none cursor-pointer {{ $filter === 'tags' ? 'bg-primary-light dark:bg-primary-dark text-white rounded-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200' }}">
+                            Tags
+                        </button>
+                        <button @click="$wire.set('filter', 'users')"
+                            class="px-4 py-1.5 font-medium text-sm leading-none cursor-pointer {{ $filter === 'users' ? 'bg-primary-light dark:bg-primary-dark text-white rounded-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200' }}">
+                            Users
+                        </button>
+                    </div>
+                @endif
+
                 @if ($results && count($results) > 0)
                     <div class="mt-4 p-2">
                         @foreach ($results as $item)
@@ -63,8 +84,7 @@
                             @if ($item['type'] === 'tag')
                                 <div
                                     class="flex items-center px-6 py-2 gap-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
-                                    <div
-                                        class="p-2 bg-{{ $item['color'] ?? 'gray' }}-100 dark:bg-{{ $item['color'] ?? 'gray' }}-700 rounded-md text-{{ $item['color'] ?? 'gray' }}-600 dark:text-{{ $item['color'] ?? 'gray' }}-300">
+                                    <div class="p-2 badge-{{ $item['color'] }} rounded-md">
                                         <x-heroicon-o-hashtag class="w-5 h-5" />
                                     </div>
                                     <div>
@@ -82,12 +102,12 @@
                                     <img src="{{ $item['avatar'] ? asset('storage/' . $item['avatar']) : $item['avatar_temporary'] }}"
                                         alt="{{ $item['name'] }}" class="w-10 h-10 rounded-full">
                                     <div>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400">
-                                            {{ '@' . $item['username'] }}
-                                        </p>
                                         <h3 class="font-bold text-gray-900 dark:text-gray-100 truncate">
                                             {{ $item['name'] }}
                                         </h3>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">
+                                            {{ '@' . $item['username'] }}
+                                        </p>
                                     </div>
                                 </div>
                             @endif

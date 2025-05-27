@@ -1,5 +1,6 @@
 <div class="space-y-6 px-4 py-6 lg:px-0 lg:py-0">
-    <div class="lg:glass-card rounded-xl lg:p-4">
+    <div
+        class="lg:bg-white/20 lg:dark:bg-black/10 lg:backdrop-blur lg:border lg:border-gray-300 lg:dark:border-gray-800 rounded-md lg:p-4">
         <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
             About DEV Dash
         </h3>
