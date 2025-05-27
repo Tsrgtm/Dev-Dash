@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DEV Dash | Where Developers Share</title>
+        <meta
+            name="description"
+            content="A modern platform for developers to share posts, follow tags and users, and engage in discussions"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                light: "#6366f1",
+                                dark: "#818cf8",
+                            },
+                            secondary: {
+                                light: "#10b981",
+                                dark: "#34d399",
+                            },
+                            accent: {
+                                light: "#f59e0b",
+                                dark: "#fbbf24",
+                            },
+                        },
+                        backdropBlur: {
+                            xs: "2px",
+                            sm: "4px",
+                            md: "8px",
+                            lg: "12px",
+                            xl: "16px",
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+            body {
+                font-family: "Inter", sans-serif;
+            }
+
+            .code-font {
+                font-family: "JetBrains Mono", monospace;
+            }
+
+            .glass-card {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+            }
+
+            .dark .glass-card {
+                background: rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .gradient-text {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+
+            .light .gradient-text {
+                background-image: linear-gradient(45deg, #6366f1, #10b981);
+            }
+
+            .dark .gradient-text {
+                background-image: linear-gradient(45deg, #818cf8, #34d399);
+            }
+
+            .tag-pill {
+                transition: all 0.2s ease;
+            }
+
+            .tag-pill:hover {
+                transform: translateY(-2px);
+            }
+        </style>
+    </head>
+    <body
+        class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300"
+    >
+        <!-- Theme Toggle -->
+        <button
+            id="themeToggle"
+            class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full glass-card shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-200 hover:scale-110 transition-transform"
+        >
+            <i class="fas fa-moon dark:hidden"></i>
+            <i class="fas fa-sun hidden dark:block"></i>
+        </button>
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 z-40 glass-card shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-2xl font-bold gradient-text">
+                                DEV Dash
+                            </h1>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a
+                                    href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    >Home</a
+                                >
+                                <a
+                                    href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    >Reading List</a
+                                >
+                                <a
+                                    href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    >Tags</a
+                                >
+                                <a
+                                    href="#"
+                                    class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    >Users</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <div class="relative mx-4">
+                                <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    class="glass-card px-4 py-2 rounded-full text-sm w-64 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                                />
+                            </div>
+                            <button
+                                class="p-1 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+                            >
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <div class="ml-3 relative">
+                                <div>
+                                    <button
+                                        class="max-w-xs flex items-center text-sm rounded-full focus:outline-none"
+                                    >
+                                        <img
+                                            class="h-8 w-8 rounded-full"
+                                            src="https://picsum.photos/200?random=1"
+                                            alt="User profile"
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <button
+                            type="button"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+                        >
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-8 space-y-6">
+                    <!-- Feed Tabs -->
+                    <div
+                        class="flex border-b border-gray-200 dark:border-gray-700"
+                    >
+                        <button
+                            class="px-4 py-2 font-medium text-sm border-b-2 border-primary-light dark:border-primary-dark text-primary-light dark:text-primary-dark"
+                        >
+                            Latest
+                        </button>
+                        <button
+                            class="px-4 py-2 font-medium text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        >
+                            Top
+                        </button>
+                        <button
+                            class="px-4 py-2 font-medium text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        >
+                            Following
+                        </button>
+                    </div>
+
+                    <!-- Featured Post -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <img
+                                class="h-10 w-10 rounded-full"
+                                src="https://picsum.photos/200?random=2"
+                                alt="Author"
+                            />
+                            <div>
+                                <p
+                                    class="font-medium text-gray-900 dark:text-gray-100"
+                                >
+                                    Sarah Johnson
+                                </p>
+                                <p
+                                    class="text-xs text-gray-500 dark:text-gray-400"
+                                >
+                                    Posted 2 hours ago
+                                </p>
+                            </div>
+                        </div>
+                        <h2
+                            class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3"
+                        >
+                            The Future of Web Development with WebAssembly
+                        </h2>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#webassembly</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#javascript</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#performance</span
+                            >
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            WebAssembly is revolutionizing how we think about
+                            web performance. In this post, we'll explore how you
+                            can leverage WASM to build blazing fast web
+                            applications...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-heart"></i>
+                                    <span>42</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-comment"></i>
+                                    <span>8</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </div>
+                            <span
+                                class="text-xs text-gray-500 dark:text-gray-400"
+                                >5 min read</span
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Regular Post -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <img
+                                class="h-10 w-10 rounded-full"
+                                src="https://picsum.photos/200?random=3"
+                                alt="Author"
+                            />
+                            <div>
+                                <p
+                                    class="font-medium text-gray-900 dark:text-gray-100"
+                                >
+                                    Alex Chen
+                                </p>
+                                <p
+                                    class="text-xs text-gray-500 dark:text-gray-400"
+                                >
+                                    Posted 5 hours ago
+                                </p>
+                            </div>
+                        </div>
+                        <h2
+                            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3"
+                        >
+                            Building a Serverless API with TypeScript and AWS
+                            Lambda
+                        </h2>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#serverless</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#typescript</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#aws</span
+                            >
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            Serverless architecture is changing how we deploy
+                            applications. Learn how to build a robust API using
+                            TypeScript and AWS Lambda with proper typing and
+                            error handling...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-heart"></i>
+                                    <span>28</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-comment"></i>
+                                    <span>5</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </div>
+                            <span
+                                class="text-xs text-gray-500 dark:text-gray-400"
+                                >4 min read</span
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Post with Code Snippet -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <img
+                                class="h-10 w-10 rounded-full"
+                                src="https://picsum.photos/200?random=4"
+                                alt="Author"
+                            />
+                            <div>
+                                <p
+                                    class="font-medium text-gray-900 dark:text-gray-100"
+                                >
+                                    Jamie Smith
+                                </p>
+                                <p
+                                    class="text-xs text-gray-500 dark:text-gray-400"
+                                >
+                                    Posted 1 day ago
+                                </p>
+                            </div>
+                        </div>
+                        <h2
+                            class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3"
+                        >
+                            React 18 Concurrent Features Explained
+                        </h2>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#react</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#javascript</span
+                            >
+                            <span
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#frontend</span
+                            >
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            React 18 introduces concurrent rendering features
+                            that can significantly improve your app's
+                            performance. Here's how to use them:
+                        </p>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre
+                                class="text-sm code-font text-gray-200 overflow-x-auto"
+                            >
+                            <code class="language-js">
+function MyComponent() {
+    const [state, setState] = useState(0);
+    
+    useEffect(() => {
+        // Concurrent features allow this to be interruptible
+        startTransition(() => {
+            setState(prev => prev + 1);
+        });
+    }, []);
+    
+    return &lt;div&gt;{state}&lt;/div&gt;;
+}
+                            </code>
+                        </pre>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-heart"></i>
+                                    <span>56</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="far fa-comment"></i>
+                                    <span>12</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-1 text-gray-500 dark:text-gray-400 hover:text-primary-light dark:hover:text-primary-dark"
+                                >
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </div>
+                            <span
+                                class="text-xs text-gray-500 dark:text-gray-400"
+                                >7 min read</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-4 space-y-6">
+                    <!-- About Card -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <h3
+                            class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4"
+                        >
+                            About DEV Dash
+                        </h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">
+                            DEV Dash is a community of developers sharing
+                            knowledge, experiences, and ideas. Join us to grow
+                            together!
+                        </p>
+                        <div class="flex space-x-3">
+                            <button
+                                class="flex-1 bg-primary-light dark:bg-primary-dark text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                            >
+                                Create Account
+                            </button>
+                            <button
+                                class="flex-1 border border-primary-light dark:border-primary-dark text-primary-light dark:text-primary-dark py-2 px-4 rounded-lg font-medium hover:bg-primary-light/10 dark:hover:bg-primary-dark/10 transition-colors"
+                            >
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Popular Tags -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <h3
+                            class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4"
+                        >
+                            Popular Tags
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#javascript</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#webdev</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#beginners</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#python</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#react</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#typescript</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full text-xs font-medium"
+                                >#node</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-secondary-light/10 dark:bg-secondary-dark/10 text-secondary-light dark:text-secondary-dark rounded-full text-xs font-medium"
+                                >#css</a
+                            >
+                            <a
+                                href="#"
+                                class="tag-pill px-3 py-1 bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark rounded-full text-xs font-medium"
+                                >#aws</a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Top Developers -->
+                    <div class="glass-card rounded-xl p-6 shadow-lg">
+                        <h3
+                            class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4"
+                        >
+                            Top Developers
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <img
+                                    class="h-10 w-10 rounded-full"
+                                    src="https://picsum.photos/200?random=5"
+                                    alt="Developer"
+                                />
+                                <div>
+                                    <p
+                                        class="font-medium text-gray-900 dark:text-gray-100"
+                                    >
+                                        Emma Wilson
+                                    </p>
+                                    <p
+                                        class="text-xs text-gray-500 dark:text-gray-400"
+                                    >
+                                        Senior Frontend Engineer
+                                    </p>
+                                </div>
+                                <button
+                                    class="ml-auto text-xs bg-primary-light dark:bg-primary-dark text-white px-3 py-1 rounded-full hover:opacity-90 transition-opacity"
+                                >
+                                    Follow
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <img
+                                    class="h-10 w-10 rounded-full"
+                                    src="https://picsum.photos/200?random=6"
+                                    alt="Developer"
+                                />
+                                <div>
+                                    <p
+                                        class="font-medium text-gray-900 dark:text-gray-100"
+                                    >
+                                        Michael Brown
+                                    </p>
+                                    <p
+                                        class="text-xs text-gray-500 dark:text-gray-400"
+                                    >
+                                        DevOps Specialist
+                                    </p>
+                                </div>
+                                <button
+                                    class="ml-auto text-xs bg-primary-light dark:bg-primary-dark text-white px-3 py-1 rounded-full hover:opacity-90 transition-opacity"
+                                >
+                                    Follow
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <img
+                                    class="h-10 w-10 rounded-full"
+                                    src="https://picsum.photos/200?random=7"
+                                    alt="Developer"
+                                />
+                                <div>
+                                    <p
+                                        class="font-medium text-gray-900 dark:text-gray-100"
+                                    >
+                                        Priya Patel
+                                    </p>
+                                    <p
+                                        class="text-xs text-gray-500 dark:text-gray-400"
+                                    >
+                                        Machine Learning Engineer
+                                    </p>
+                                </div>
+                                <button
+                                    class="ml-auto text-xs bg-primary-light dark:bg-primary-dark text-white px-3 py-1 rounded-full hover:opacity-90 transition-opacity"
+                                >
+                                    Follow
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="glass-card mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3
+                            class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4"
+                        >
+                            DEV Dash
+                        </h3>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">
+                            The modern platform for developers to share and
+                            grow.
+                        </p>
+                    </div>
+                    <div>
+                        <h4
+                            class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4"
+                        >
+                            Navigation
+                        </h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Home</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Reading List</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Tags</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Users</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4
+                            class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4"
+                        >
+                            Legal
+                        </h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Privacy Policy</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Terms of Service</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark text-sm"
+                                    >Cookie Policy</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4
+                            class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4"
+                        >
+                            Connect
+                        </h4>
+                        <div class="flex space-x-4">
+                            <a
+                                href="#"
+                                class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark"
+                                ><i class="fab fa-twitter"></i
+                            ></a>
+                            <a
+                                href="#"
+                                class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark"
+                                ><i class="fab fa-github"></i
+                            ></a>
+                            <a
+                                href="#"
+                                class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark"
+                                ><i class="fab fa-discord"></i
+                            ></a>
+                            <a
+                                href="#"
+                                class="text-gray-700 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark"
+                                ><i class="fab fa-linkedin"></i
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-500 dark:text-gray-400"
+                >
+                    <p>© 2023 DEV Dash. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Login Modal -->
+        <div
+            id="loginModal"
+            class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+        >
+            <div class="glass-card rounded-xl p-8 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+                    >
+                        Sign In
+                    </h2>
+                    <button
+                        id="closeLoginModal"
+                        class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form class="space-y-4">
+                    <div>
+                        <label
+                            for="email"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            id="email"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="your@email.com"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="password"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Password</label
+                        >
+                        <input
+                            type="password"
+                            id="password"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input
+                                id="remember-me"
+                                type="checkbox"
+                                class="h-4 w-4 rounded border-gray-300 text-primary-light dark:text-primary-dark focus:ring-primary-light dark:focus:ring-primary-dark"
+                            />
+                            <label
+                                for="remember-me"
+                                class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                                >Remember me</label
+                            >
+                        </div>
+                        <a
+                            href="#"
+                            class="text-sm text-primary-light dark:text-primary-dark hover:underline"
+                            >Forgot password?</a
+                        >
+                    </div>
+                    <button
+                        type="submit"
+                        class="w-full bg-primary-light dark:bg-primary-dark text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                    >
+                        Sign In
+                    </button>
+                </form>
+                <div
+                    class="mt-4 text-center text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Don't have an account?
+                    <a
+                        href="#"
+                        class="text-primary-light dark:text-primary-dark hover:underline"
+                        >Sign up</a
+                    >
+                </div>
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div
+                                class="w-full border-t border-gray-300 dark:border-gray-600"
+                            ></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span
+                                class="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400"
+                                >Or continue with</span
+                            >
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <a
+                            href="#"
+                            class="glass-card w-full inline-flex justify-center py-2 px-4 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        >
+                            <i class="fab fa-github mr-2"></i> GitHub
+                        </a>
+                        <a
+                            href="#"
+                            class="glass-card w-full inline-flex justify-center py-2 px-4 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        >
+                            <i class="fab fa-google mr-2"></i> Google
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div
+            id="registerModal"
+            class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+        >
+            <div class="glass-card rounded-xl p-8 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2
+                        class="text-2xl font-bold text-gray-900 dark:text-gray-100"
+                    >
+                        Create Account
+                    </h2>
+                    <button
+                        id="closeRegisterModal"
+                        class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form class="space-y-4">
+                    <div>
+                        <label
+                            for="name"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Name</label
+                        >
+                        <input
+                            type="text"
+                            id="name"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="Your name"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="email"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            id="email"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="your@email.com"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="password"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Password</label
+                        >
+                        <input
+                            type="password"
+                            id="password"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="confirm-password"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                            >Confirm Password</label
+                        >
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            class="glass-card w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <div class="flex items-center">
+                        <input
+                            id="terms"
+                            type="checkbox"
+                            class="h-4 w-4 rounded border-gray-300 text-primary-light dark:text-primary-dark focus:ring-primary-light dark:focus:ring-primary-dark"
+                        />
+                        <label
+                            for="terms"
+                            class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                            >I agree to the
+                            <a
+                                href="#"
+                                class="text-primary-light dark:text-primary-dark hover:underline"
+                                >Terms of Service</a
+                            >
+                            and
+                            <a
+                                href="#"
+                                class="text-primary-light dark:text-primary-dark hover:underline"
+                                >Privacy Policy</a
+                            ></label
+                        >
+                    </div>
+                    <button
+                        type="submit"
+                        class="w-full bg-primary-light dark:bg-primary-dark text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                    >
+                        Create Account
+                    </button>
+                </form>
+                <div
+                    class="mt-4 text-center text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Already have an account?
+                    <a
+                        href="#"
+                        class="text-primary-light dark:text-primary-dark hover:underline"
+                        >Sign in</a
+                    >
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Theme Toggle
+            const themeToggle = document.getElementById("themeToggle");
+            themeToggle.addEventListener("click", () => {
+                document.documentElement.classList.toggle("dark");
+                localStorage.setItem(
+                    "theme",
+                    document.documentElement.classList.contains("dark")
+                        ? "dark"
+                        : "light"
+                );
+            });
+
+            // Check for saved theme preference
+            if (
+                localStorage.getItem("theme") === "dark" ||
+                (!localStorage.getItem("theme") &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+
+            // Modal Toggle
+            const loginModal = document.getElementById("loginModal");
+            const registerModal = document.getElementById("registerModal");
+            const closeLoginModal = document.getElementById("closeLoginModal");
+            const closeRegisterModal =
+                document.getElementById("closeRegisterModal");
+
+            // These would be connected to actual buttons in your navigation
+            // For demo purposes, we'll just show the functionality
+            function showLoginModal() {
+                loginModal.classList.remove("hidden");
+            }
+
+            function showRegisterModal() {
+                registerModal.classList.remove("hidden");
+            }
+
+            closeLoginModal.addEventListener("click", () => {
+                loginModal.classList.add("hidden");
+            });
+
+            closeRegisterModal.addEventListener("click", () => {
+                registerModal.classList.add("hidden");
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener("click", (e) => {
+                if (e.target === loginModal) {
+                    loginModal.classList.add("hidden");
+                }
+                if (e.target === registerModal) {
+                    registerModal.classList.add("hidden");
+                }
+            });
+
+            // Sample data for posts (would come from API in real app)
+            const posts = [
+                {
+                    id: 1,
+                    author: "Sarah Johnson",
+                    avatar: "https://picsum.photos/200?random=2",
+                    time: "2 hours ago",
+                    title: "The Future of Web Development with WebAssembly",
+                    tags: ["#webassembly", "#javascript", "#performance"],
+                    content:
+                        "WebAssembly is revolutionizing how we think about web performance. In this post, we'll explore how you can leverage WASM to build blazing fast web applications...",
+                    likes: 42,
+                    comments: 8,
+                    readTime: "5 min read",
+                },
+                {
+                    id: 2,
+                    author: "Alex Chen",
+                    avatar: "https://picsum.photos/200?random=3",
+                    time: "5 hours ago",
+                    title: "Building a Serverless API with TypeScript and AWS Lambda",
+                    tags: ["#serverless", "#typescript", "#aws"],
+                    content:
+                        "Serverless architecture is changing how we deploy applications. Learn how to build a robust API using TypeScript and AWS Lambda with proper typing and error handling...",
+                    likes: 28,
+                    comments: 5,
+                    readTime: "4 min read",
+                },
+                {
+                    id: 3,
+                    author: "Jamie Smith",
+                    avatar: "https://picsum.photos/200?random=4",
+                    time: "1 day ago",
+                    title: "React 18 Concurrent Features Explained",
+                    tags: ["#react", "#javascript", "#frontend"],
+                    content:
+                        "React 18 introduces concurrent rendering features that can significantly improve your app's performance. Here's how to use them:",
+                    codeSnippet: `function MyComponent() {
+    const [state, setState] = useState(0);
+    
+    useEffect(() => {
+        // Concurrent features allow this to be interruptible
+        startTransition(() => {
+            setState(prev => prev + 1);
+        });
+    }, []);
+    
+    return <div>{state}</div>;
+}`,
+                    likes: 56,
+                    comments: 12,
+                    readTime: "7 min read",
+                },
+            ];
+
+            // Sample data for tags
+            const popularTags = [
+                { name: "#javascript", color: "primary" },
+                { name: "#webdev", color: "secondary" },
+                { name: "#beginners", color: "accent" },
+                { name: "#python", color: "primary" },
+                { name: "#react", color: "secondary" },
+                { name: "#typescript", color: "accent" },
+                { name: "#node", color: "primary" },
+                { name: "#css", color: "secondary" },
+                { name: "#aws", color: "accent" },
+            ];
+
+            // Sample data for top developers
+            const topDevelopers = [
+                {
+                    name: "Emma Wilson",
+                    avatar: "https://picsum.photos/200?random=5",
+                    role: "Senior Frontend Engineer",
+                },
+                {
+                    name: "Michael Brown",
+                    avatar: "https://picsum.photos/200?random=6",
+                    role: "DevOps Specialist",
+                },
+                {
+                    name: "Priya Patel",
+                    avatar: "https://picsum.photos/200?random=7",
+                    role: "Machine Learning Engineer",
+                },
+            ];
+        </script>
+    </body>
+</html>
